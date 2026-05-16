@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/expense-manager/', 
   plugins: [react(),tailwindcss()]
-  base: '/expense-manager/',
 })
