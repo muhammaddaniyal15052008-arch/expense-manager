@@ -49,7 +49,7 @@ const History = () => {
             <p className="text-gray-500">Add your first expense from the dashboard</p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+          <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
             {addedExpense
   // Step A: Pehle check karo user ne kya select kiya hai
                .filter((elem) => {
@@ -86,7 +86,7 @@ const History = () => {
 
       {/* Summary Card */}
       {addedExpense.length > 0 && (
-        <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-md p-4">
+        <div className="mt-6 bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl shadow-md p-4">
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-medium">Total Expenses:</span>
             <span className="text-2xl font-bold text-blue-600">
