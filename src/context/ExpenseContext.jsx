@@ -14,7 +14,7 @@ useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(addedExpense));
   }, [addedExpense]);
 
-  const [categories, setCategories] = useState(['Food', 'Transport', 'Shopping', 'Bills','Education','Savings'])
+  const [categories, setCategories] = useState(['All','Food', 'Transport', 'Shopping', 'Bills','Education','Savings'])
 
   return (
    <ExpenseData.Provider 

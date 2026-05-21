@@ -4,7 +4,8 @@ import { ExpenseData } from '../context/ExpenseContext'
 const History = () => {
 
   const {addedExpense, setaddedExpense, categories} = useContext(ExpenseData)
-  console.log('mn hn',addedExpense);
+  const [selectedCategory, setselectedCategory] = useState('All')
+
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -23,6 +24,18 @@ const History = () => {
               ({addedExpense.length} expenses)
             </span>
           </h2>
+          <label>Category</label>
+          <select
+              value={selectedCategory}
+              onChange={(e) => setselectedCategory(e.target.value)}
+              className="ml-2 px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+               {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
         </div>
         
         {addedExpense.length === 0 ? (
@@ -37,26 +50,36 @@ const History = () => {
           </div>
         ) : (
           <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-            {addedExpense.map((elem, idx) => (
-              <div 
-                key={idx} 
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition group"
-              >
-                <div className="flex-1 space-y-1 sm:space-y-0">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-lg font-semibold text-gray-800">
-                      ₹{elem.inputExpense}
-                    </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {elem.category}
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {elem.date}
-                  </div>
-                </div>
+            {addedExpense
+  // Step A: Pehle check karo user ne kya select kiya hai
+               .filter((elem) => {
+                   if (selectedCategory === "All") {
+                      return true; // Agar 'All' select hai toh saare aane do
+                    }
+                      return elem.category === selectedCategory; // Warna sirf match hone wali category aane do
+                   })
+               // Step B: Phir purani tarah copy banakar ulta (reverse) karo
+               .slice()
+               .reverse()
+              // Step C: Phir screen par dikhao
+               .map((elem, index) => (
+                <div key={index} className="flex-1 space-y-1 sm:space-y-0">
+                <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-lg font-semibold text-gray-800">
+                   ₹{elem.inputExpense}
+                </span>
+                <span className="text-lg font-semibold text-gray-800">
+                  {elem.detail}
+                </span>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {elem.category}
+                </span>
               </div>
-            ))}
+              <div className="text-sm text-gray-500">
+        {elem.date}
+      </div>
+    </div>
+  ))}
           </div>
         )}
       </div>

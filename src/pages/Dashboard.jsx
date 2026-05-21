@@ -5,6 +5,7 @@ const Dashboard = () => {
 
   const {addedExpense, setaddedExpense, categories} = useContext(ExpenseData)
   const [inputExpense, setinputExpense] = useState('')
+  const [detail, setdetail] = useState('')
   const [selectedCat, setselectedCat] = useState('Food')
   console.log(categories);
   
@@ -14,9 +15,11 @@ const Dashboard = () => {
     setaddedExpense([...addedExpense, {
       inputExpense: inputExpense, 
       date: dateNow,
-      category: selectedCat
+      category: selectedCat,
+      detail: detail
     }])
     setinputExpense('')
+    setdetail('')
   }
 
   const deleteExpense = (idx) => {
@@ -38,11 +41,28 @@ const Dashboard = () => {
             <input 
               id="expense"
               value={inputExpense}
-              onChange={(e) => setinputExpense(e.target.value)}
+              // Is check se sirf numbers ya khali text hi state mein save hoga
+              onChange={(e) => {
+              const value = e.target.value;
+              if (value === "" || /^[0-9\b]+$/.test(value)) {
+              setinputExpense(value);
+            }
+            }}
               placeholder="Enter Expense" 
-              type="text"
+              type="number" // Yeh user ko sirf number likhne ki ijazat dega
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
               required
+             />
+            <label htmlFor="expense" className="block text-sm font-medium text-gray-700 mb-2">
+              Expense Detail / <span className='text-xs text-gray-500'>optional</span>
+            </label>
+            <textarea
+              id="expenseDetail"
+              value={detail} // Apne state variable ke mutabik change karlein
+              onChange={(e) => setdetail(e.target.value)}
+              placeholder="Enter Expense Details"
+              rows="4" // Yeh textarea ki default height set karega
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
             />
           </div>
           
@@ -83,7 +103,7 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {addedExpense.map((elem, idx) => (
+            {addedExpense.slice().reverse().map((elem, idx) => (
               <div 
                 key={idx} 
                 className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition group"
@@ -92,6 +112,9 @@ const Dashboard = () => {
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className="text-lg font-semibold text-gray-800">
                       ₹{elem.inputExpense}
+                    </span>
+                    <span className="text-lg font-semibold text-gray-800">
+                      {elem.detail}
                     </span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       {elem.category}
