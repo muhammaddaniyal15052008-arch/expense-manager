@@ -1,18 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
 import './index.css'
-import App from './App.jsx'
-import ExpenseContext from './context/ExpenseContext.jsx'
+import ExpenseContext from './context/ExpenseContext'
 import { CurrencyProvider } from './context/CurrencyContext'
-import { BrowserRouter } from "react-router-dom";
 
+// Detect if running on production or local
+const basename = import.meta.env.PROD ? '/expense-manager/' : '/'
 
-createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-  <ExpenseContext>
-    <CurrencyProvider>
-      <App />
-    </CurrencyProvider>
-  </ExpenseContext>
-  </BrowserRouter>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter basename={basename}>
+      <ExpenseContext>
+        <CurrencyProvider>
+          <App />
+        </CurrencyProvider>
+      </ExpenseContext>
+    </BrowserRouter>
+  </React.StrictMode>,
 )
